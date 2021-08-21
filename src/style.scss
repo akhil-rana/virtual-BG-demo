@@ -1,0 +1,9 @@
+#videoElement, .output_canvas{
+  max-width: 45%;
+  transform: scaleX(-1);
+  margin: 10px;
+}
+
+#container{
+  display: flex;
+}
