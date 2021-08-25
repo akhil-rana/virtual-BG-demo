@@ -14,7 +14,7 @@ const foregroundCanvasElement: HTMLCanvasElement = document.querySelector(
 const backgroundCanvasElement: HTMLCanvasElement = document.querySelector(
   '.background_output_canvas'
 )!;
-const outputCanvasElement: HTMLCanvasElement =
+const outputCanvasElement: HTMLCanvasElement | any =
   document.querySelector('.output_canvas')!;
 const outputCanvasCtx: any = outputCanvasElement.getContext('2d');
 let myStream: MediaStream;
