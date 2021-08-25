@@ -10,10 +10,14 @@
     <div id="app">
       <button id="toggleButton">Start</button>
 
-      <div id="container">
-        <video autoplay="true" id="videoElement"></video>
-        <canvas class="output_canvas" width="1280px" height="720px"> </canvas>
+      <video autoplay="true" id="inputVideoElement"></video>
+      <div id="canvas-container">
+        <canvas class="foreground_output_canvas" width="1280px" height="720px">
+        </canvas>
+        <canvas class="background_output_canvas" width="1280px" height="720px">
+        </canvas>
       </div>
+      <video autoplay="true" id="outputVideoElement"></video>
     </div>
     <script type="module" src="/src/main.ts"></script>
   </body>

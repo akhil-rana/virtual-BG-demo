@@ -1,9 +1,23 @@
-#videoElement, .output_canvas{
+.foreground_output_canvas,
+.background_output_canvas {
   max-width: 45%;
   transform: scaleX(-1);
   margin: 10px;
+  aspect-ratio: 1024/720;
+  position: absolute;
+  top: 0;
+  left: 0;
 }
 
-#container{
-  display: flex;
+.background_output_canvas {
+  filter: blur(4px);
+}
+
+
+#canvas-container {
+  position: relative;
+}
+
+#inputVideoElement {
+  display: none;
 }

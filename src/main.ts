@@ -1,32 +1,33 @@
 import './style.scss';
 import { start } from 'virtual-bg';
 
-const videoElement: HTMLVideoElement = document.querySelector('#videoElement')!;
+const inputVideoElement: HTMLVideoElement =
+  document.querySelector('#inputVideoElement')!;
 const toggleButton: any = document.querySelector('#toggleButton')!;
-
-let canvasElement: HTMLCanvasElement =
-  document.querySelector('.output_canvas')!;
 
 let isSegmentationOn = false;
 
 toggleButton.onclick = async () => {
-  isSegmentationOn ? null : start(videoElement, onResults);
+  isSegmentationOn ? null : start(inputVideoElement, onResults, 0);
   // isSegmentationOn = !isSegmentationOn;
 };
 
-// async function stop() {
-//   await selfieSegmentation.close();
-//   myStream.getTracks().forEach((track: any) => {
-//     if (track.kind === 'video') {
-//       track.enabled = false;
-//       setTimeout(() => {
-//         track.stop();
-//       }, 200);
-//     }
-//   });
-// }
-
 function onResults(results: any) {
+  let foregroundCanvasElement: HTMLCanvasElement = document.querySelector(
+    '.foreground_output_canvas'
+  )!;
+  let backgroundCanvasElement: HTMLCanvasElement = document.querySelector(
+    '.background_output_canvas'
+  )!;
+  showCanvas(results, foregroundCanvasElement, 'foreground');
+  showCanvas(results, backgroundCanvasElement, 'background');
+}
+
+function showCanvas(
+  results: any,
+  canvasElement: HTMLCanvasElement,
+  type: 'foreground' | 'background'
+) {
   const canvasCtx: any = canvasElement.getContext('2d');
 
   canvasCtx.save();
@@ -39,13 +40,13 @@ function onResults(results: any) {
     canvasElement.height
   );
 
-  // Only overwrite existing pixels.
-  canvasCtx.globalCompositeOperation = 'source-in';
-  canvasCtx.fillStyle = '#00FF00';
-  canvasCtx.fillRect(0, 0, canvasElement.width, canvasElement.height);
+  canvasCtx.globalCompositeOperation =
+    type === 'background'
+      ? 'source-out'
+      : type === 'foreground'
+      ? 'source-in'
+      : 'source-in';
 
-  // Only overwrite missing pixels.
-  canvasCtx.globalCompositeOperation = 'destination-atop';
   canvasCtx.drawImage(
     results.image,
     0,
