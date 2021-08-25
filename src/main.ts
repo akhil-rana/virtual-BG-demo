@@ -27,7 +27,7 @@ toggleButton.onclick = async () => {
 };
 
 function startStreamCapture() {
-  myStream = outputCanvasElement.captureStream();
+  myStream = outputCanvasElement.captureStream(30);
   outputVideoElement.srcObject = myStream;
   isCaptureStarted = true;
 }
