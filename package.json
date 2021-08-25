@@ -13,6 +13,6 @@
   },
   "author": "Akhil Rana",
   "dependencies": {
-    "@mediapipe/selfie_segmentation": "^0.1.1629494320"
+    "virtual-bg": "^1.0.0"
   }
 }
