@@ -1,14 +1,9 @@
-// .foreground_output_canvas,
-// .background_output_canvas
-// {
-//   display: none;
-// }
-
 .output_canvas {
-  max-width: 60%;
+  // max-width: 60%;
+  display: none;
+  max-height: 90vh;
   transform: scaleX(-1);
   margin: 10px;
-  aspect-ratio: 3/2;
   object-fit: unset;
 }
 
@@ -19,13 +14,3 @@
 #inputVideoElement {
   display: none;
 }
-
-// #outputVideoElement {
-//   display: none;
-
-//   max-width: 60%;
-//   transform: scaleX(-1);
-//   margin: 10px;
-//   aspect-ratio: 1024/720;
-//   object-fit: unset;
-// }
