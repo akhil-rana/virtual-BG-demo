@@ -1,12 +1,11 @@
 import './style.scss';
 import { start } from 'virtual-bg';
-import { canvasRGBA } from 'stackblur-canvas';
 
 const inputVideoElement: HTMLVideoElement =
   document.querySelector('#inputVideoElement')!;
-const outputVideoElement: HTMLVideoElement = document.querySelector(
-  '#outputVideoElement'
-)!;
+// const outputVideoElement: HTMLVideoElement = document.querySelector(
+//   '#outputVideoElement'
+// )!;
 const toggleButton: any = document.querySelector('#toggleButton')!;
 const foregroundCanvasElement: HTMLCanvasElement = document.querySelector(
   '.foreground_output_canvas'
@@ -17,7 +16,7 @@ const backgroundCanvasElement: HTMLCanvasElement = document.querySelector(
 const outputCanvasElement: HTMLCanvasElement | any =
   document.querySelector('.output_canvas')!;
 const outputCanvasCtx: any = outputCanvasElement.getContext('2d');
-let myStream: MediaStream;
+// let myStream: MediaStream;
 let isSegmentationOn = false;
 let isCaptureStarted = false;
 
@@ -26,19 +25,21 @@ toggleButton.onclick = async () => {
   // isSegmentationOn = !isSegmentationOn;
 };
 
-function startStreamCapture() {
-  myStream = outputCanvasElement.captureStream(30);
-  outputVideoElement.srcObject = myStream;
-  isCaptureStarted = true;
-}
+// function startStreamCapture() {
+//   myStream = outputCanvasElement.captureStream(30);
+//   outputVideoElement.srcObject = myStream;
+//   isCaptureStarted = true;
+// }
 
 function onResults(results: any) {
-  showCanvas(results, foregroundCanvasElement, 'foreground');
   showCanvas(results, backgroundCanvasElement, 'background');
+  showCanvas(results, foregroundCanvasElement, 'foreground');
   outputCanvasCtx.drawImage(backgroundCanvasElement, 0, 0);
+  const backgroundCanvasCtx: any = backgroundCanvasElement.getContext('2d');
+  backgroundCanvasCtx.filter = 'blur(10px)';
   outputCanvasCtx.drawImage(foregroundCanvasElement, 0, 0);
   if (!isCaptureStarted) {
-    startStreamCapture();
+    // startStreamCapture();
   }
 }
 
@@ -50,6 +51,7 @@ function showCanvas(
   const canvasCtx: any = canvasElement.getContext('2d');
 
   canvasCtx.save();
+
   canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
   canvasCtx.drawImage(
     results.segmentationMask,
@@ -70,15 +72,5 @@ function showCanvas(
     canvasElement.height
   );
 
-  if (type === 'background') {
-    canvasRGBA(
-      canvasElement,
-      0,
-      0,
-      canvasElement.width,
-      canvasElement.height,
-      20
-    );
-  }
   canvasCtx.restore();
 }

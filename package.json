@@ -13,7 +13,6 @@
   },
   "author": "Akhil Rana",
   "dependencies": {
-    "stackblur-canvas": "^2.5.0",
     "virtual-bg": "^0.0.1"
   }
 }
