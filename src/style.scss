@@ -1,8 +1,8 @@
-.foreground_output_canvas,
-.background_output_canvas
-{
-  display: none;
-}
+// .foreground_output_canvas,
+// .background_output_canvas
+// {
+//   display: none;
+// }
 
 .output_canvas {
   max-width: 60%;
@@ -20,12 +20,12 @@
   display: none;
 }
 
-#outputVideoElement {
-  display: none;
+// #outputVideoElement {
+//   display: none;
 
-  max-width: 60%;
-  transform: scaleX(-1);
-  margin: 10px;
-  aspect-ratio: 1024/720;
-  object-fit: unset;
-}
+//   max-width: 60%;
+//   transform: scaleX(-1);
+//   margin: 10px;
+//   aspect-ratio: 1024/720;
+//   object-fit: unset;
+// }

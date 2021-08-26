@@ -1,76 +1,14 @@
 import './style.scss';
-import { start } from 'virtual-bg';
+import { blurBackground } from 'virtual-bg';
 
 const inputVideoElement: HTMLVideoElement =
   document.querySelector('#inputVideoElement')!;
-// const outputVideoElement: HTMLVideoElement = document.querySelector(
-//   '#outputVideoElement'
-// )!;
+
 const toggleButton: any = document.querySelector('#toggleButton')!;
-const foregroundCanvasElement: HTMLCanvasElement = document.querySelector(
-  '.foreground_output_canvas'
-)!;
-const backgroundCanvasElement: HTMLCanvasElement = document.querySelector(
-  '.background_output_canvas'
-)!;
+
 const outputCanvasElement: HTMLCanvasElement | any =
   document.querySelector('.output_canvas')!;
-const outputCanvasCtx: any = outputCanvasElement.getContext('2d');
-// let myStream: MediaStream;
-let isSegmentationOn = false;
-let isCaptureStarted = false;
 
 toggleButton.onclick = async () => {
-  isSegmentationOn ? null : start(inputVideoElement, onResults, 0);
-  // isSegmentationOn = !isSegmentationOn;
+  blurBackground(inputVideoElement, outputCanvasElement, 7);
 };
-
-// function startStreamCapture() {
-//   myStream = outputCanvasElement.captureStream(30);
-//   outputVideoElement.srcObject = myStream;
-//   isCaptureStarted = true;
-// }
-
-function onResults(results: any) {
-  showCanvas(results, backgroundCanvasElement, 'background');
-  showCanvas(results, foregroundCanvasElement, 'foreground');
-  outputCanvasCtx.drawImage(backgroundCanvasElement, 0, 0);
-  const backgroundCanvasCtx: any = backgroundCanvasElement.getContext('2d');
-  backgroundCanvasCtx.filter = 'blur(10px)';
-  outputCanvasCtx.drawImage(foregroundCanvasElement, 0, 0);
-  if (!isCaptureStarted) {
-    // startStreamCapture();
-  }
-}
-
-function showCanvas(
-  results: any,
-  canvasElement: HTMLCanvasElement,
-  type: 'foreground' | 'background'
-) {
-  const canvasCtx: any = canvasElement.getContext('2d');
-
-  canvasCtx.save();
-
-  canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
-  canvasCtx.drawImage(
-    results.segmentationMask,
-    0,
-    0,
-    canvasElement.width,
-    canvasElement.height
-  );
-  if (type === 'foreground') {
-    canvasCtx.globalCompositeOperation = 'source-in';
-  }
-
-  canvasCtx.drawImage(
-    results.image,
-    0,
-    0,
-    canvasElement.width,
-    canvasElement.height
-  );
-
-  canvasCtx.restore();
-}

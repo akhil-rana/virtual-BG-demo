@@ -13,6 +13,6 @@
   },
   "author": "Akhil Rana",
   "dependencies": {
-    "virtual-bg": "^0.0.1"
+    "virtual-bg": "^0.0.4"
   }
 }
