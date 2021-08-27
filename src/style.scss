@@ -1,7 +1,7 @@
 .output_canvas {
   // max-width: 60%;
-  display: none;
   max-height: 90vh;
+  max-width: 90vw;
   transform: scaleX(-1);
   margin: 10px;
   object-fit: unset;
@@ -9,6 +9,7 @@
 
 #canvas-container {
   position: relative;
+  display: none;
 }
 
 #inputVideoElement {

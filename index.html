@@ -12,6 +12,17 @@
 
       <video autoplay="true" id="inputVideoElement"></video>
       <div id="canvas-container">
+        <input
+          type="range"
+          id="blurIntensitySlider"
+          name="blurIntensitySlider"
+          min="2"
+          max="20"
+          value="7"
+          step="1"
+        />
+        <label for="blurIntensity">Blur Intensity</label>
+        <br />
         <canvas class="output_canvas" width="1280px" height="720px"> </canvas>
       </div>
       <!-- <video autoplay="true" id="outputVideoElement"></video> -->

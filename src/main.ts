@@ -1,5 +1,5 @@
 import './style.scss';
-import { blurBackground } from 'virtual-bg';
+import { segmentBackground, applyBlur } from 'virtual-bg';
 
 const inputVideoElement: HTMLVideoElement =
   document.querySelector('#inputVideoElement')!;
@@ -9,9 +9,16 @@ const toggleButton: any = document.querySelector('#toggleButton')!;
 const outputCanvasElement: HTMLCanvasElement | any =
   document.querySelector('.output_canvas')!;
 
+const canvasContainerElement: HTMLDivElement | any =
+  document.querySelector('#canvas-container')!;
+
+const blurIntensitySlider: HTMLInputElement | any = document.querySelector(
+  '#blurIntensitySlider'
+)!;
+
 toggleButton.onclick = async () => {
   let myStream = await navigator.mediaDevices.getUserMedia({
-    video: { width: { ideal: 1024 }, height: { ideal: 720 } },
+    video: { width: { ideal: 1920 }, height: { ideal: 1080 } },
   });
 
   const width = myStream.getVideoTracks()[0].getSettings().width;
@@ -19,9 +26,18 @@ toggleButton.onclick = async () => {
 
   inputVideoElement.srcObject = myStream;
 
-  outputCanvasElement.style.display = 'unset';
+  canvasContainerElement.style.display = 'unset';
+  outputCanvasElement.style.width = width;
+  outputCanvasElement.style.height = height;
+
   outputCanvasElement.style.aspectRatio = `${width}/${height}`;
   toggleButton.style.display = 'none';
 
-  blurBackground(inputVideoElement, outputCanvasElement, 7);
+  segmentBackground(inputVideoElement, outputCanvasElement);
+  applyBlur(7);
+};
+
+blurIntensitySlider.onchange = (e: any) => {
+  const blurIntensity = e?.target?.value;
+  applyBlur(blurIntensity);
 };
