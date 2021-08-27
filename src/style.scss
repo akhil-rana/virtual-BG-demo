@@ -1,5 +1,8 @@
+#app {
+  text-align: center;
+}
+
 .output_canvas {
-  // max-width: 60%;
   max-height: 90vh;
   max-width: 90vw;
   transform: scaleX(-1);
@@ -7,11 +10,15 @@
   object-fit: unset;
 }
 
-#canvas-container {
+#container {
   position: relative;
   display: none;
 }
 
 #inputVideoElement {
+  display: none;
+}
+
+#imageBrowserContainer{
   display: none;
 }

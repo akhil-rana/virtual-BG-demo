@@ -11,21 +11,34 @@
       <button id="toggleButton">Start</button>
 
       <video autoplay="true" id="inputVideoElement"></video>
-      <div id="canvas-container">
-        <input
-          type="range"
-          id="blurIntensitySlider"
-          name="blurIntensitySlider"
-          min="2"
-          max="20"
-          value="7"
-          step="1"
-        />
-        <label for="blurIntensity">Blur Intensity</label>
+      <div id="container">
+        <div id="effectTypeSelectorContainer">
+          <label for="cars">Background Effect:</label>
+          <select name="effectTypeSelector" id="effectTypeSelector">
+            <option value="blur">Blur</option>
+            <option value="image">Image</option>
+            <!-- <option value="video">Video</option> -->
+          </select>
+        </div>
+        <br />
+        <div id="blurIntensityContainer">
+          <input
+            type="range"
+            id="blurIntensitySlider"
+            name="blurIntensitySlider"
+            min="2"
+            max="20"
+            value="7"
+            step="1"
+          />
+          <label for="blurIntensity">Blur Intensity</label>
+        </div>
+        <div id="imageBrowserContainer">
+          <input type="file" id="imageBrowserInput" name="imageBrowserInput" />
+        </div>
         <br />
         <canvas class="output_canvas" width="1280px" height="720px"> </canvas>
       </div>
-      <!-- <video autoplay="true" id="outputVideoElement"></video> -->
     </div>
     <script type="module" src="/src/main.ts"></script>
   </body>
