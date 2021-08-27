@@ -21,8 +21,14 @@ toggleButton.onclick = async () => {
     video: { width: { ideal: 1920 }, height: { ideal: 1080 } },
   });
 
-  const width = myStream.getVideoTracks()[0].getSettings().width;
-  const height = myStream.getVideoTracks()[0].getSettings().height;
+  const width =
+    window.innerHeight > window.innerWidth
+      ? myStream.getVideoTracks()[0].getSettings().height
+      : myStream.getVideoTracks()[0].getSettings().width;
+  const height =
+    window.innerHeight > window.innerWidth
+      ? myStream.getVideoTracks()[0].getSettings().width
+      : myStream.getVideoTracks()[0].getSettings().height;
 
   inputVideoElement.srcObject = myStream;
 
