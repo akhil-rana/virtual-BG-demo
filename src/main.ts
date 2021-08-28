@@ -5,6 +5,7 @@ import {
   applyImageBackground,
   applyVideoBackground,
   applyScreenBackground,
+  changeForegroundType,
 } from 'virtual-bg';
 import { calculateFPS } from './utils';
 
@@ -41,17 +42,17 @@ toggleButtonElement.onclick = async () => {
     },
   });
 
-  // const width =
-  //   window.innerHeight > window.innerWidth
-  //     ? myStream.getVideoTracks()[0].getSettings().height
-  //     : myStream.getVideoTracks()[0].getSettings().width;
-  // const height =
-  //   window.innerHeight > window.innerWidth
-  //     ? myStream.getVideoTracks()[0].getSettings().width
-  //     : myStream.getVideoTracks()[0].getSettings().height;
+  const width =
+    window.innerHeight > window.innerWidth
+      ? myStream.getVideoTracks()[0].getSettings().height
+      : myStream.getVideoTracks()[0].getSettings().width;
+  const height =
+    window.innerHeight > window.innerWidth
+      ? myStream.getVideoTracks()[0].getSettings().width
+      : myStream.getVideoTracks()[0].getSettings().height;
 
-  const width = myStream.getVideoTracks()[0].getSettings().width;
-  const height = myStream.getVideoTracks()[0].getSettings().height;
+  // const width = myStream.getVideoTracks()[0].getSettings().width;
+  // const height = myStream.getVideoTracks()[0].getSettings().height;
 
   inputVideoElement.srcObject = myStream;
 
@@ -83,6 +84,9 @@ effectTypeSelectorElement.onchange = (e: any) => {
     (<HTMLDivElement>(
       document.querySelector('#videoBrowserContainer')
     )).style.display = 'none';
+    (<HTMLDivElement>(
+      document.querySelector('#foregroundTypeSelectorContainer')
+    )).style.display = 'none';
     applyBlur(7);
     if (isScreenCaptureOn) {
       stopScreenCapture();
@@ -96,6 +100,9 @@ effectTypeSelectorElement.onchange = (e: any) => {
     )).style.display = 'unset';
     (<HTMLDivElement>(
       document.querySelector('#videoBrowserContainer')
+    )).style.display = 'none';
+    (<HTMLDivElement>(
+      document.querySelector('#foregroundTypeSelectorContainer')
     )).style.display = 'none';
     if (imageBrowserInputElement?.files[0]) {
       setBackgroundImage(imageBrowserInputElement?.files[0]);
@@ -117,6 +124,9 @@ effectTypeSelectorElement.onchange = (e: any) => {
     (<HTMLDivElement>(
       document.querySelector('#videoBrowserContainer')
     )).style.display = 'unset';
+    (<HTMLDivElement>(
+      document.querySelector('#foregroundTypeSelectorContainer')
+    )).style.display = 'none';
     if (videoBrowserInputElement?.files[0]) {
       setBackgroundVideo(videoBrowserInputElement?.files[0]);
     } else
@@ -137,11 +147,15 @@ effectTypeSelectorElement.onchange = (e: any) => {
     (<HTMLDivElement>(
       document.querySelector('#videoBrowserContainer')
     )).style.display = 'none';
+    (<HTMLDivElement>(
+      document.querySelector('#foregroundTypeSelectorContainer')
+    )).style.display = 'unset';
     setScreenBackground();
   }
 };
 
 function setBackgroundImage(imageFile: File) {
+  applyBlur(0);
   const reader = new FileReader();
   reader.readAsDataURL(imageFile);
   reader.onload = (e: any) => {
@@ -153,10 +167,12 @@ function setBackgroundImage(imageFile: File) {
 }
 
 function setBackgroundVideo(videoFile: File) {
+  applyBlur(0);
   const videoElement = document.createElement('video');
   const videoUrl = URL.createObjectURL(videoFile);
   videoElement.src = videoUrl;
   applyVideoBackground(videoElement);
+  changeForegroundType('normal');
 }
 
 async function setScreenBackground() {
@@ -164,10 +180,11 @@ async function setScreenBackground() {
   screenStream = await navigator.mediaDevices.getDisplayMedia({ video: true });
   isScreenCaptureOn = true;
   applyScreenBackground(screenStream);
+  changeForegroundType('presenter');
 
   screenStream.getVideoTracks()[0].addEventListener('ended', () => {
     isScreenCaptureOn = false;
-    console.log('screen capture ended');
+    // console.log('screen capture ended');
   });
 }
 
