@@ -177,6 +177,7 @@ function setBackgroundVideo(videoFile: File) {
 
 async function setScreenBackground() {
   applyBlur(0);
+  // @ts-ignore
   screenStream = await navigator.mediaDevices.getDisplayMedia({ video: true });
   isScreenCaptureOn = true;
   applyScreenBackground(screenStream);
