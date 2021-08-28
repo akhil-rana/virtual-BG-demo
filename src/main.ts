@@ -4,6 +4,7 @@ import {
   applyBlur,
   applyImageBackground,
   applyVideoBackground,
+  applyScreenBackground,
 } from 'virtual-bg';
 import { calculateFPS } from './utils';
 
@@ -29,6 +30,8 @@ const imageBrowserInputElement: HTMLInputElement | any =
 
 const videoBrowserInputElement: HTMLInputElement | any =
   document.querySelector('#videoBrowserInput')!;
+let screenStream: MediaStream;
+let isScreenCaptureOn: boolean = false;
 
 toggleButtonElement.onclick = async () => {
   let myStream = await navigator.mediaDevices.getUserMedia({
@@ -81,6 +84,9 @@ effectTypeSelectorElement.onchange = (e: any) => {
       document.querySelector('#videoBrowserContainer')
     )).style.display = 'none';
     applyBlur(7);
+    if (isScreenCaptureOn) {
+      stopScreenCapture();
+    }
   } else if (type === 'image') {
     (<HTMLDivElement>(
       document.querySelector('#blurIntensityContainer')
@@ -98,6 +104,9 @@ effectTypeSelectorElement.onchange = (e: any) => {
         applyBlur(0);
         setBackgroundImage(e?.target?.files[0]);
       };
+    if (isScreenCaptureOn) {
+      stopScreenCapture();
+    }
   } else if (type === 'video') {
     (<HTMLDivElement>(
       document.querySelector('#blurIntensityContainer')
@@ -115,6 +124,20 @@ effectTypeSelectorElement.onchange = (e: any) => {
         applyBlur(0);
         setBackgroundVideo(e?.target?.files[0]);
       };
+    if (isScreenCaptureOn) {
+      stopScreenCapture();
+    }
+  } else if (type === 'screen') {
+    (<HTMLDivElement>(
+      document.querySelector('#blurIntensityContainer')
+    )).style.display = 'none';
+    (<HTMLDivElement>(
+      document.querySelector('#imageBrowserContainer')
+    )).style.display = 'none';
+    (<HTMLDivElement>(
+      document.querySelector('#videoBrowserContainer')
+    )).style.display = 'none';
+    setScreenBackground();
   }
 };
 
@@ -134,6 +157,24 @@ function setBackgroundVideo(videoFile: File) {
   const videoUrl = URL.createObjectURL(videoFile);
   videoElement.src = videoUrl;
   applyVideoBackground(videoElement);
+}
+
+async function setScreenBackground() {
+  applyBlur(0);
+  screenStream = await navigator.mediaDevices.getDisplayMedia({ video: true });
+  isScreenCaptureOn = true;
+  applyScreenBackground(screenStream);
+
+  screenStream.getVideoTracks()[0].addEventListener('ended', () => {
+    isScreenCaptureOn = false;
+    console.log('screen capture ended');
+  });
+}
+
+function stopScreenCapture() {
+  let tracks = screenStream.getTracks();
+  tracks.forEach((track) => track.stop());
+  isScreenCaptureOn = false;
 }
 
 calculateFPS();
