@@ -19,6 +19,21 @@
   display: none;
 }
 
-#imageBrowserContainer{
+#imageBrowserContainer,
+#videoBrowserContainer {
   display: none;
+}
+
+#fpsCounter {
+  position: fixed;
+  top: 0.5em;
+  left: 0.5em;
+  font-size: 1.3em;
+}
+
+#githubIcon {
+  position: fixed;
+  top: 1em;
+  right: 1em;
+  cursor: pointer;
 }

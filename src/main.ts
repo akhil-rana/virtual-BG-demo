@@ -1,5 +1,11 @@
 import './style.scss';
-import { segmentBackground, applyBlur, applyImageBackground } from 'virtual-bg';
+import {
+  segmentBackground,
+  applyBlur,
+  applyImageBackground,
+  applyVideoBackground,
+} from 'virtual-bg';
+import { calculateFPS } from './utils';
 
 const inputVideoElement: HTMLVideoElement =
   document.querySelector('#inputVideoElement')!;
@@ -21,19 +27,28 @@ const blurIntensitySliderElement: HTMLInputElement | any =
 const imageBrowserInputElement: HTMLInputElement | any =
   document.querySelector('#imageBrowserInput')!;
 
+const videoBrowserInputElement: HTMLInputElement | any =
+  document.querySelector('#videoBrowserInput')!;
+
 toggleButtonElement.onclick = async () => {
   let myStream = await navigator.mediaDevices.getUserMedia({
-    video: { width: { ideal: 1920 }, height: { ideal: 1080 } },
+    video: {
+      width: { ideal: 1920 },
+      height: { ideal: 1080 },
+    },
   });
 
-  const width =
-    window.innerHeight > window.innerWidth
-      ? myStream.getVideoTracks()[0].getSettings().height
-      : myStream.getVideoTracks()[0].getSettings().width;
-  const height =
-    window.innerHeight > window.innerWidth
-      ? myStream.getVideoTracks()[0].getSettings().width
-      : myStream.getVideoTracks()[0].getSettings().height;
+  // const width =
+  //   window.innerHeight > window.innerWidth
+  //     ? myStream.getVideoTracks()[0].getSettings().height
+  //     : myStream.getVideoTracks()[0].getSettings().width;
+  // const height =
+  //   window.innerHeight > window.innerWidth
+  //     ? myStream.getVideoTracks()[0].getSettings().width
+  //     : myStream.getVideoTracks()[0].getSettings().height;
+
+  const width = myStream.getVideoTracks()[0].getSettings().width;
+  const height = myStream.getVideoTracks()[0].getSettings().height;
 
   inputVideoElement.srcObject = myStream;
 
@@ -62,6 +77,9 @@ effectTypeSelectorElement.onchange = (e: any) => {
     (<HTMLDivElement>(
       document.querySelector('#imageBrowserContainer')
     )).style.display = 'none';
+    (<HTMLDivElement>(
+      document.querySelector('#videoBrowserContainer')
+    )).style.display = 'none';
     applyBlur(7);
   } else if (type === 'image') {
     (<HTMLDivElement>(
@@ -70,12 +88,32 @@ effectTypeSelectorElement.onchange = (e: any) => {
     (<HTMLDivElement>(
       document.querySelector('#imageBrowserContainer')
     )).style.display = 'unset';
+    (<HTMLDivElement>(
+      document.querySelector('#videoBrowserContainer')
+    )).style.display = 'none';
     if (imageBrowserInputElement?.files[0]) {
       setBackgroundImage(imageBrowserInputElement?.files[0]);
     } else
       imageBrowserInputElement.onchange = (e: any) => {
         applyBlur(0);
         setBackgroundImage(e?.target?.files[0]);
+      };
+  } else if (type === 'video') {
+    (<HTMLDivElement>(
+      document.querySelector('#blurIntensityContainer')
+    )).style.display = 'none';
+    (<HTMLDivElement>(
+      document.querySelector('#imageBrowserContainer')
+    )).style.display = 'none';
+    (<HTMLDivElement>(
+      document.querySelector('#videoBrowserContainer')
+    )).style.display = 'unset';
+    if (videoBrowserInputElement?.files[0]) {
+      setBackgroundVideo(videoBrowserInputElement?.files[0]);
+    } else
+      videoBrowserInputElement.onchange = (e: any) => {
+        applyBlur(0);
+        setBackgroundVideo(e?.target?.files[0]);
       };
   }
 };
@@ -90,3 +128,12 @@ function setBackgroundImage(imageFile: File) {
     applyImageBackground(image);
   };
 }
+
+function setBackgroundVideo(videoFile: File) {
+  const videoElement = document.createElement('video');
+  const videoUrl = URL.createObjectURL(videoFile);
+  videoElement.src = videoUrl;
+  applyVideoBackground(videoElement);
+}
+
+calculateFPS();
