@@ -75,13 +75,17 @@
             <option value="normal">Normal</option>
             <option value="presenter">Presenter</option>
           </select>
+          &nbsp; &nbsp; &nbsp; &nbsp;
           <span id="presenterOffsetContainer">
             Offset:
             <input
-              type="number"
+              type="range"
               name="offset"
               id="presenterOffset"
+              min="-500"
+              max="500"
               value="-100"
+              step="2"
             />
           </span>
         </div>

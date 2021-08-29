@@ -236,3 +236,11 @@ function stopScreenCapture() {
 };
 
 calculateFPS();
+
+if (
+  /Android|webOS|iPhone|iPad|iPod|BlackBerry|BB|PlayBook|IEMobile|Windows Phone|Kindle|Silk|Opera Mini/i.test(
+    navigator.userAgent
+  )
+) {
+  alert('Mobile Devices are not fully supported. Please visit from a desktop');
+}
