@@ -157,6 +157,7 @@ effectTypeSelectorElement.onchange = (e: any) => {
       document.querySelector('#presenterOffsetContainer')
     )).style.display = 'unset';
     foregroundTypeSelectorElement.value = 'presenter';
+    outputCanvasElement.style.transform = 'unset';
     foregroundTypeSelectorElement.onchange = (e: any) => {
       const type = e?.target?.value;
       if (type === 'normal') {
@@ -164,6 +165,7 @@ effectTypeSelectorElement.onchange = (e: any) => {
         (<HTMLSpanElement>(
           document.querySelector('#presenterOffsetContainer')
         )).style.display = 'none';
+        outputCanvasElement.style.transform = 'scaleX(-1)';
       } else if (type === 'presenter') {
         (<HTMLSpanElement>(
           document.querySelector('#presenterOffsetContainer')
@@ -174,6 +176,7 @@ effectTypeSelectorElement.onchange = (e: any) => {
             (<HTMLInputElement>document.getElementById('presenterOffset')).value
           )
         );
+        outputCanvasElement.style.transform = 'unset';
       }
     };
   }
@@ -221,6 +224,7 @@ function stopScreenCapture() {
   let tracks = screenStream.getTracks();
   tracks.forEach((track) => track.stop());
   isScreenCaptureOn = false;
+  outputCanvasElement.style.transform = 'scaleX(-1)';
 }
 
 (<HTMLInputElement>document.getElementById('presenterOffset')).oninput = (
