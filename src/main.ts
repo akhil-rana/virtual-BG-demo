@@ -23,6 +23,8 @@ const containerElement: HTMLDivElement | any =
 const effectTypeSelectorElement: HTMLSelectElement | any =
   document.querySelector('#effectTypeSelector')!;
 
+const foregroundTypeSelectorElement: HTMLSelectElement | any =
+  document.querySelector('#foregroundTypeSelector')!;
 const blurIntensitySliderElement: HTMLInputElement | any =
   document.querySelector('#blurIntensitySlider')!;
 
@@ -66,7 +68,7 @@ toggleButtonElement.onclick = async () => {
   applyBlur(7);
 };
 
-blurIntensitySliderElement.onchange = (e: any) => {
+blurIntensitySliderElement.oninput = (e: any) => {
   const blurIntensity = e?.target?.value;
   applyBlur(blurIntensity);
 };
@@ -151,6 +153,29 @@ effectTypeSelectorElement.onchange = (e: any) => {
       document.querySelector('#foregroundTypeSelectorContainer')
     )).style.display = 'unset';
     setScreenBackground();
+    (<HTMLSpanElement>(
+      document.querySelector('#presenterOffsetContainer')
+    )).style.display = 'unset';
+    foregroundTypeSelectorElement.value = 'presenter';
+    foregroundTypeSelectorElement.onchange = (e: any) => {
+      const type = e?.target?.value;
+      if (type === 'normal') {
+        changeForegroundType('normal');
+        (<HTMLSpanElement>(
+          document.querySelector('#presenterOffsetContainer')
+        )).style.display = 'none';
+      } else if (type === 'presenter') {
+        (<HTMLSpanElement>(
+          document.querySelector('#presenterOffsetContainer')
+        )).style.display = 'unset';
+        changeForegroundType(
+          'presenter',
+          Number(
+            (<HTMLInputElement>document.getElementById('presenterOffset')).value
+          )
+        );
+      }
+    };
   }
 };
 
@@ -181,7 +206,10 @@ async function setScreenBackground() {
   screenStream = await navigator.mediaDevices.getDisplayMedia({ video: true });
   isScreenCaptureOn = true;
   applyScreenBackground(screenStream);
-  changeForegroundType('presenter');
+  changeForegroundType(
+    'presenter',
+    Number((<HTMLInputElement>document.getElementById('presenterOffset')).value)
+  );
 
   screenStream.getVideoTracks()[0].addEventListener('ended', () => {
     isScreenCaptureOn = false;
@@ -194,5 +222,17 @@ function stopScreenCapture() {
   tracks.forEach((track) => track.stop());
   isScreenCaptureOn = false;
 }
+
+(<HTMLInputElement>document.getElementById('presenterOffset')).oninput = (
+  e: any
+) => {
+  if (
+    isScreenCaptureOn &&
+    (<HTMLInputElement>document.getElementById('foregroundTypeSelector'))
+      .value === 'presenter'
+  ) {
+    changeForegroundType('presenter', e?.target?.value);
+  }
+};
 
 calculateFPS();

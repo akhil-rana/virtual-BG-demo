@@ -46,8 +46,8 @@
             type="range"
             id="blurIntensitySlider"
             name="blurIntensitySlider"
-            min="2"
-            max="20"
+            min="0"
+            max="30"
             value="7"
             step="1"
           />
@@ -75,6 +75,15 @@
             <option value="normal">Normal</option>
             <option value="presenter">Presenter</option>
           </select>
+          <span id="presenterOffsetContainer">
+            Offset:
+            <input
+              type="number"
+              name="offset"
+              id="presenterOffset"
+              value="-100"
+            />
+          </span>
         </div>
         <br />
         <canvas class="output_canvas" width="1280px" height="720px"> </canvas>
